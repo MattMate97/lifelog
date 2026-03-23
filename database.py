@@ -61,5 +61,13 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
 
+    db.execute('''CREATE TABLE IF NOT EXISTS music (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        artist TEXT NOT NULL,
+        genre TEXT,
+        status TEXT DEFAULT 'want_to_listen',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+
     db.commit()
     db.close()

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Music</h2>
+
+        <form action="/music/add" method="POST" class="add-form">
+            <input type="text" name="artist" placeholder="Artist or band..." required>
+            <input type="text" name="genre" placeholder="Genre...">
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for artist in music %}
+            <li class="task-item {% if artist['status'] == 'loved' %}done{% endif %}">
+                <div>
+                    <span>{{ artist['artist'] }}</span>
+                    {% if artist['genre'] %}
+                    <small class="category-tag">{{ artist['genre'] }}</small>
+                    {% endif %}
+                    <small class="category-tag status-{{ artist['status'] }}">{{ artist['status'].replace('_', ' ') }}</small>
+                </div>
+                <div class="task-actions">
+                    {% if artist['status'] == 'want_to_listen' %}
+                    <a href="/music/status/{{ artist['id'] }}/listening">🎵 Listening</a>
+                    {% endif %}
+                    {% if artist['status'] == 'listening' %}
+                    <a href="/music/status/{{ artist['id'] }}/loved">❤️ Loved</a>
+                    {% endif %}
+                    <a href="/music/delete/{{ artist['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

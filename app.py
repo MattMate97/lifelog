@@ -205,6 +205,39 @@ def delete_game(id):
     db.close()
     return redirect(url_for('games'))
 
+@app.route('/music')
+def music():
+    db = get_db()
+    all_music = db.execute('SELECT * FROM music ORDER BY created_at DESC').fetchall()
+    db.close()
+    return render_template('music.html', music=all_music)
+
+@app.route('/music/add', methods=['POST'])
+def add_music():
+    artist = request.form['artist']
+    genre = request.form['genre']
+    db = get_db()
+    db.execute('INSERT INTO music (artist, genre) VALUES (?, ?)', (artist, genre))
+    db.commit()
+    db.close()
+    return redirect(url_for('music'))
+
+@app.route('/music/status/<int:id>/<status>')
+def update_music_status(id, status):
+    db = get_db()
+    db.execute('UPDATE music SET status = ? WHERE id = ?', (status, id))
+    db.commit()
+    db.close()
+    return redirect(url_for('music'))
+
+@app.route('/music/delete/<int:id>')
+def delete_music(id):
+    db = get_db()
+    db.execute('DELETE FROM music WHERE id = ?', (id,))
+    db.commit()
+    db.close()
+    return redirect(url_for('music'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
