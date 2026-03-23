@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies & Shows - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Movies & Shows</h2>
+
+        <form action="/watchlist/add" method="POST" class="add-form">
+            <input type="text" name="title" placeholder="Title..." required>
+            <input type="text" name="genre" placeholder="Genre...">
+            <select name="type">
+                <option value="movie">Movie</option>
+                <option value="show">TV Show</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for item in items %}
+            <li class="task-item {% if item['watched'] %}done{% endif %}">
+                <div>
+                    <span>{{ item['title'] }}</span>
+                    <small class="category-tag">{{ item['type'] }}</small>
+                    {% if item['genre'] %}
+                    <small class="category-tag">{{ item['genre'] }}</small>
+                    {% endif %}
+                </div>
+                <div class="task-actions">
+                    {% if not item['watched'] %}
+                    <a href="/watchlist/watched/{{ item['id'] }}">✅ Watched</a>
+                    {% endif %}
+                    <a href="/watchlist/delete/{{ item['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

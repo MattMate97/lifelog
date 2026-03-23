@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finances - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Finances</h2>
+
+        <div class="finance-summary">
+            <div class="summary-card income">
+                <p>Income</p>
+                <h3>${{ "%.2f"|format(total_income) }}</h3>
+            </div>
+            <div class="summary-card expenses">
+                <p>Expenses</p>
+                <h3>${{ "%.2f"|format(total_expenses) }}</h3>
+            </div>
+            <div class="summary-card balance">
+                <p>Balance</p>
+                <h3>${{ "%.2f"|format(balance) }}</h3>
+            </div>
+        </div>
+
+        <form action="/finances/add" method="POST" class="add-form finance-form">
+            <input type="text" name="title" placeholder="Description..." required>
+            <input type="number" name="amount" placeholder="Amount..." step="0.01" required>
+            <select name="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <select name="category">
+                <option value="Salary">Salary</option>
+                <option value="Food">Food</option>
+                <option value="Rent">Rent</option>
+                <option value="Transport">Transport</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for transaction in transactions %}
+            <li class="task-item">
+                <div>
+                    <span>{{ transaction['title'] }}</span>
+                    <small class="category-tag">{{ transaction['category'] }}</small>
+                </div>
+                <div class="task-actions">
+                    <span class="{{ transaction['type'] }}-amount">
+                        {% if transaction['type'] == 'income' %}+{% else %}-{% endif %}
+                        ${{ "%.2f"|format(transaction['amount']) }}
+                    </span>
+                    <a href="/finances/delete/{{ transaction['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

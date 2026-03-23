@@ -127,3 +127,73 @@ h2 {
 .task-actions a:hover {
     color: #2c3e50;
 }
+
+.finance-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.summary-card p {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+.summary-card h3 {
+    font-size: 1.8rem;
+}
+
+.summary-card.income h3 { color: #27ae60; }
+.summary-card.expenses h3 { color: #e74c3c; }
+.summary-card.balance h3 { color: #2c3e50; }
+
+.finance-form {
+    flex-wrap: wrap;
+}
+
+.finance-form input, 
+.finance-form select {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.income-amount { color: #27ae60; font-weight: 500; }
+.expense-amount { color: #e74c3c; font-weight: 500; }
+
+.category-tag {
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 8px;
+}
+
+.goal-form {
+    flex-wrap: wrap;
+}
+
+.goal-form input {
+    flex: 1;
+    min-width: 150px;
+}
+
+.goal-description {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 4px;
+}

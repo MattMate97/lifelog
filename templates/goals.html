@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Goals</h2>
+
+        <form action="/goals/add" method="POST" class="add-form goal-form">
+            <input type="text" name="title" placeholder="Goal title..." required>
+            <input type="text" name="description" placeholder="Description (optional)...">
+            <input type="date" name="target_date">
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for goal in goals %}
+            <li class="task-item {% if goal['done'] %}done{% endif %}">
+                <div>
+                    <span>{{ goal['title'] }}</span>
+                    {% if goal['description'] %}
+                    <p class="goal-description">{{ goal['description'] }}</p>
+                    {% endif %}
+                    {% if goal['target_date'] %}
+                    <small class="category-tag">🎯 {{ goal['target_date'] }}</small>
+                    {% endif %}
+                </div>
+                <div class="task-actions">
+                    {% if not goal['done'] %}
+                    <a href="/goals/complete/{{ goal['id'] }}">✅ Complete</a>
+                    {% endif %}
+                    <a href="/goals/delete/{{ goal['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
