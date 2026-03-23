@@ -197,3 +197,11 @@ h2 {
     color: #888;
     margin-top: 4px;
 }
+
+.status-to_read { background: #ffeaa7; color: #b8860b; }
+.status-reading { background: #74b9ff; color: #0c3d6e; }
+.status-read { background: #55efc4; color: #0a5c45; }
+
+.status-want_to_play { background: #ffeaa7; color: #b8860b; }
+.status-playing { background: #74b9ff; color: #0c3d6e; }
+.status-completed { background: #55efc4; color: #0a5c45; }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Games</h2>
+
+        <form action="/games/add" method="POST" class="add-form">
+            <input type="text" name="title" placeholder="Title..." required>
+            <input type="text" name="genre" placeholder="Genre...">
+            <input type="text" name="platform" placeholder="Platform (PC, PS5, Switch...)">
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for game in games %}
+            <li class="task-item {% if game['status'] == 'completed' %}done{% endif %}">
+                <div>
+                    <span>{{ game['title'] }}</span>
+                    {% if game['platform'] %}
+                    <small class="category-tag">{{ game['platform'] }}</small>
+                    {% endif %}
+                    {% if game['genre'] %}
+                    <small class="category-tag">{{ game['genre'] }}</small>
+                    {% endif %}
+                    <small class="category-tag status-{{ game['status'] }}">{{ game['status'].replace('_', ' ') }}</small>
+                </div>
+                <div class="task-actions">
+                    {% if game['status'] == 'want_to_play' %}
+                    <a href="/games/status/{{ game['id'] }}/playing">🎮 Playing</a>
+                    {% endif %}
+                    {% if game['status'] == 'playing' %}
+                    <a href="/games/status/{{ game['id'] }}/completed">✅ Completed</a>
+                    {% endif %}
+                    <a href="/games/delete/{{ game['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

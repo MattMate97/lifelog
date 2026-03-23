@@ -42,5 +42,24 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
 
+    db.execute('''CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        author TEXT,
+        genre TEXT,
+        status TEXT DEFAULT 'to_read',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    )''')
+
+    db.execute('''CREATE TABLE IF NOT EXISTS games (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        genre TEXT,
+        platform TEXT,
+        status TEXT DEFAULT 'want_to_play',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+
     db.commit()
     db.close()

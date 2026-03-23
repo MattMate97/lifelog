@@ -137,6 +137,74 @@ def delete_watchlist(id):
     db.close()
     return redirect(url_for('watchlist'))
 
+@app.route('/books')
+def books():
+    db = get_db()
+    all_books = db.execute('SELECT * FROM books ORDER BY created_at DESC').fetchall()
+    db.close()
+    return render_template('books.html', books=all_books)
+
+@app.route('/books/add', methods=['POST'])
+def add_book():
+    title = request.form['title']
+    author = request.form['author']
+    genre = request.form['genre']
+    db = get_db()
+    db.execute('INSERT INTO books (title, author, genre) VALUES (?, ?, ?)', (title, author, genre))
+    db.commit()
+    db.close()
+    return redirect(url_for('books'))
+
+@app.route('/books/status/<int:id>/<status>')
+def update_book_status(id, status):
+    db = get_db()
+    db.execute('UPDATE books SET status = ? WHERE id = ?', (status, id))
+    db.commit()
+    db.close()
+    return redirect(url_for('books'))
+
+@app.route('/books/delete/<int:id>')
+def delete_book(id):
+    db = get_db()
+    db.execute('DELETE FROM books WHERE id = ?', (id,))
+    db.commit()
+    db.close()
+    return redirect(url_for('books'))
+
+@app.route('/games')
+def games():
+    db = get_db()
+    all_games = db.execute('SELECT * FROM games ORDER BY created_at DESC').fetchall()
+    db.close()
+    return render_template('games.html', games=all_games)
+
+@app.route('/games/add', methods=['POST'])
+def add_game():
+    title = request.form['title']
+    genre = request.form['genre']
+    platform = request.form['platform']
+    db = get_db()
+    db.execute('INSERT INTO games (title, genre, platform) VALUES (?, ?, ?)', (title, genre, platform))
+    db.commit()
+    db.close()
+    return redirect(url_for('games'))
+
+@app.route('/games/status/<int:id>/<status>')
+def update_game_status(id, status):
+    db = get_db()
+    db.execute('UPDATE games SET status = ? WHERE id = ?', (status, id))
+    db.commit()
+    db.close()
+    return redirect(url_for('games'))
+
+@app.route('/games/delete/<int:id>')
+def delete_game(id):
+    db = get_db()
+    db.execute('DELETE FROM games WHERE id = ?', (id,))
+    db.commit()
+    db.close()
+    return redirect(url_for('games'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
