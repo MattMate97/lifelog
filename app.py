@@ -238,6 +238,34 @@ def delete_music(id):
     db.close()
     return redirect(url_for('music'))
 
+@app.route('/fitness')
+def fitness():
+    db = get_db()
+    all_workouts = db.execute('SELECT * FROM fitness ORDER BY created_at DESC').fetchall()
+    total_workouts = db.execute('SELECT COUNT(*) FROM fitness').fetchone()[0]
+    total_minutes = db.execute('SELECT SUM(duration) FROM fitness').fetchone()[0] or 0
+    db.close()
+    return render_template('fitness.html', workouts=all_workouts, total_workouts=total_workouts, total_minutes=total_minutes)
+
+@app.route('/fitness/add', methods=['POST'])
+def add_workout():
+    workout = request.form['workout']
+    duration = request.form['duration']
+    notes = request.form['notes']
+    db = get_db()
+    db.execute('INSERT INTO fitness (workout, duration, notes) VALUES (?, ?, ?)', (workout, duration, notes))
+    db.commit()
+    db.close()
+    return redirect(url_for('fitness'))
+
+@app.route('/fitness/delete/<int:id>')
+def delete_workout(id):
+    db = get_db()
+    db.execute('DELETE FROM fitness WHERE id = ?', (id,))
+    db.commit()
+    db.close()
+    return redirect(url_for('fitness'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)

@@ -69,5 +69,13 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
 
+    db.execute('''CREATE TABLE IF NOT EXISTS fitness (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        workout TEXT NOT NULL,
+        duration INTEGER,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )''')
+
     db.commit()
     db.close()

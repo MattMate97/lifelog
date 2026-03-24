@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness - LifeLog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>LifeLog</h1>
+        <p>Your personal life dashboard</p>
+        <a href="/" class="back-link">← Back to dashboard</a>
+    </header>
+
+    <main>
+        <h2>Fitness</h2>
+
+        <div class="finance-summary">
+            <div class="summary-card">
+                <p>Total Workouts</p>
+                <h3>{{ total_workouts }}</h3>
+            </div>
+            <div class="summary-card">
+                <p>Total Minutes</p>
+                <h3>{{ total_minutes }}</h3>
+            </div>
+            <div class="summary-card">
+                <p>Total Hours</p>
+                <h3>{{ "%.1f"|format(total_minutes / 60) if total_minutes > 0 else "0.0" }}</h3>
+            </div>
+        </div>
+
+        <form action="/fitness/add" method="POST" class="add-form">
+            <input type="text" name="workout" placeholder="Workout type (Running, Gym, Yoga...)..." required>
+            <input type="number" name="duration" placeholder="Duration (mins)..." required>
+            <input type="text" name="notes" placeholder="Notes (optional)...">
+            <button type="submit">Add</button>
+        </form>
+
+        <ul class="task-list">
+            {% for workout in workouts %}
+            <li class="task-item">
+                <div>
+                    <span>{{ workout['workout'] }}</span>
+                    <small class="category-tag">⏱️ {{ workout['duration'] }} mins</small>
+                    {% if workout['notes'] %}
+                    <p class="goal-description">{{ workout['notes'] }}</p>
+                    {% endif %}
+                </div>
+                <div class="task-actions">
+                    <a href="/fitness/delete/{{ workout['id'] }}">🗑️ Delete</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
